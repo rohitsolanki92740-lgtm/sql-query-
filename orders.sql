@@ -3,7 +3,7 @@
 -- i. Write a query to display the columns in a specific order like order date, salesman id,
 -- order number and purchase amount from for all the orders.
 -- ii. Write a query which will retrieve the value of salesman id of all salesman getting
--- orders from the customers in orders table without any repeats.
+-- orders from the customers in orderDs table without any repeats.
 -- iii. Write a SQL query to display the order number followed by order date and the
 -- purchase amount for each order which will be delivered by the salesman who is
 -- holding the ID 5001.
@@ -184,5 +184,173 @@ select c.cname as Customer_Name , s.name from  customer4 c inner join salesman4 
 
 -- 6 rows selected.
 
+
+-- 16) Create following tables and perform the given queries.
+-- Table: Salesman - Sid, name, city, commission
+-- Table: Customer - C_id, cname, city, grade, salesman_id
+-- I. Write a SQL statement to find the names of all customers along with the salesman
+-- who works for them.
+-- II. Write a query to display all salesman and customer located in London. (UNION)
+-- III. Write a query to display salesman and their cities.
+
+-- 16) Create the following tables and perform the given queries.
+create table salesman5(
+    sid number(3),
+    name varchar2(10),
+    city varchar2(10),
+    commission number(5,2)
+);
+-- TABLE: SALESMAN
+
+-- Sid | Name   | City    | Commission
+-- ----|--------|---------|-----------
+-- 1   | Ravi   | London  | 0.15
+-- 2   | Amit   | Paris   | 0.13
+-- 3   | John   | London  | 0.14
+-- 4   | Neha   | Mumbai  | 0.12
+-- 5   | David  | Delhi   | 0.10
+insert into salesman5 VALUES(1,'Ravi','London', 0.15);
+insert into salesman5 VALUES(2,'Amit','Paris', 0.13);
+insert into salesman5 VALUES(3,'John','London', 0.14);
+insert into salesman5 VALUES(4,'Neha','Mumbai', 0.12);
+insert into salesman5 VALUES(5,'Delhi','Delhi', 0.10);
+
+-- TABLE: CUSTOMER
+
+-- Table: Customer - C_id, cname, city, grade, salesman_id
+
+CREATE TABLE customer5(
+    C_id number(4),
+    cname varchar2(10),
+    city varchar2(10),
+    grade number(5),
+    salesman_id varchar2(3)
+);
+-- C_id | Cname  | City    | Grade | Salesman_id
+-- -----|--------|---------|-------|------------
+-- 101  | Rahul  | London  | 200   | 1
+-- 102  | Priya  | Paris   | 300   | 2
+-- 103  | Karan  | Mumbai  | 100   | 4
+-- 104  | Sneha  | London  | 200   | 3
+-- 105  | Arjun  | Delhi   | 300   | 5
+insert into customer5 values(101,'Rahul','London',200,1);
+insert into customer5 values(102,'Priya','Paris',300,2);
+insert into customer5 values(103,'Karan','Mumbai',100,3);
+insert into customer5 values(104,'Sneha','London',200,4);
+insert into customer5 values(105,'Arjun','Delhi',300,5);
+
+-- I. Write a SQL statement to find the names of all customers along with the salesman who works for them.
+
+select c.cname , s.name from customer5 c inner join salesman5 s on c.salesman_id = s.sid; 
+-- Output:
+
+-- CNAME      NAME
+-- ---------- ----------
+-- Rahul      Ravi
+-- Priya      Amit
+-- Karan      John
+-- Sneha      Neha
+-- Arjun      Delhi
+-- II. Write a query to display all salesman and customer located in London. (UNION)
+
+SELECT name, city
+FROM Salesman
+where city = 'London'
+UNION
+SELECT cname, city
+FROM Customer
+where city = 'London';
+
+
+
+-- Output:
+
+-- Name   | City
+-- -------|--------
+-- Ravi   | London
+-- John   | London
+-- Rahul  | London
+-- Sneha  | London
+
+
+-- III. Write a query to display salesman and their cities.
+
+select name ,city from salesman5;
+-- Output:
+
+-- NAME       CITY
+-- ---------- ---------
+-- Ravi       London
+-- Amit       Paris
+-- John       London
+-- Neha       Mumbai
+-- Delhi      Delhi
+
+-- (17) Create table and perform the given queries.
+-- Table: emp_details - Emp_no, fname, lname, emp_dept
+-- i. Write a query to find the last name of all employees without duplicate.
+-- ii. Write a query to display all the data of employees that work in the department 57.
+-- iii. Write a query to find the data of employees whose last name is Doshi or Joshi.
+
+-- 17) Create table and perform the given queries.
+
+-- TABLE: emp_details
+CREATE TABLE emp_details5(
+    Emp_no number(5),
+    fname varchar2(10),
+    lname varchar2(10),
+    emp_dept number(3)
+);
+-- Emp_no | fname  | lname  | emp_dept
+-- -------|--------|--------|---------
+-- 101    | Rahul  | Patel  | 57
+-- 102    | Priya  | Doshi  | 58
+-- 103    | Amit   | Joshi  | 57
+-- 104    | Neha   | Patel  | 59
+-- 105    | Karan  | Doshi  | 57
+-- 106    | Riya   | Shah   | 58
+insert into emp_details5 values(101,'Rahul','Patel',57);
+insert into emp_details5 values(102,'Priya','Doshi',58);
+insert into emp_details5 values(103,'Amit','Joshi',57);
+insert into emp_details5 values(104,'Neha','Patel',59);
+insert into emp_details5 values(105,'Karan','Doshi',57);
+insert into emp_details5 values(106,'Riya','Shah',58);
+
+-- i. Write a query to find the last name of all employees without duplicate.
+
+select DISTINCT lname from emp_details5;
+
+-- Output:
+
+-- lname
+-- ------
+-- Patel
+-- Doshi
+-- Joshi
+-- Shah
+
+
+-- ii. Write a query to display all the data of employees that work in the department 57.
+select *from emp_details5 where emp_dept = 57;
+-- Output:
+
+-- Emp_no | fname  | lname  | emp_dept
+-- -------|--------|--------|---------
+-- 101    | Rahul  | Patel  | 57
+-- 103    | Amit   | Joshi  | 57
+-- 105    | Karan  | Doshi  | 57
+
+
+-- iii. Write a query to find the data of employees whose last name is Doshi or Joshi.
+
+select *from emp_details5 where lname = 'Doshi' or lname = 'Joshi';
+
+-- Output:
+
+-- Emp_no | fname  | lname  | emp_dept
+-- -------|--------|--------|---------
+-- 102    | Priya  | Doshi  | 58
+-- 103    | Amit   | Joshi  | 57
+-- 105    | Karan  | Doshi  | 57
 
   
